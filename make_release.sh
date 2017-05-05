@@ -19,7 +19,6 @@ else
 fi
 
 echo "Writing files to $version/"
-echo
 echo "" > $version/$notes_filename
 
 for dir in *; do
@@ -28,6 +27,7 @@ for dir in *; do
 	fi
 	
 	name="$dir"
+	echo
 	echo "=== $name ==="
 	eval $(cat "$dir/$info_filename")
 	echo "Source url is $source_url"https://github.com/MatthewScholefield/jsonxx/archive/v0.1.0.tar.gz
