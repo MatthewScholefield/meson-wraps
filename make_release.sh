@@ -30,7 +30,7 @@ for dir in *; do
 	name="$dir"
 	echo "=== $name ==="
 	eval $(cat "$dir/$info_filename")
-	echo "Source url is $source_url"
+	echo "Source url is $source_url"https://github.com/MatthewScholefield/jsonxx/archive/v0.1.0.tar.gz
 	
 	source_name=$(wget --server-response -q -O - "$source_url" 2>&1 |
 		grep "Content-Disposition:" | tail -1 |
@@ -53,5 +53,5 @@ for dir in *; do
 	patch_url="$release_url/$version/$patch_name"
 	echo "Patch url is $patch_url"
 	
-	echo "### [$name:][$name-url] ###\n\`\`\`\n[wrap-file]\ndirectory = $dir\n\nsource_url = $source_url\nsource_filename = $source_name\nsource_hash = $source_hash\n\npatch_url = $patch_url\npatch_filename = $patch_name\npatch_hash = $patch_hash\n\`\`\`\n[$name-url]:$repository_url\n" >> "$version/$notes_filename"
+	printf "### [$name:][$name-url] ###\n\`\`\`\n[wrap-file]\ndirectory = $dir\n\nsource_url = $source_url\nsource_filename = $source_name\nsource_hash = $source_hash\n\npatch_url = $patch_url\npatch_filename = $patch_name\npatch_hash = $patch_hash\n\`\`\`\n[$name-url]:$repository_url\n\n" >> "$version/$notes_filename"
 done
