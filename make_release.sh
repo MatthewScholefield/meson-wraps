@@ -63,7 +63,7 @@ for dir in *; do
 	echo "Patch url is $patch_url"
 	
 	wrap_txt_name=$name.wrap
-	printf "\n[wrap-file]\ndirectory = $folder_name\n\nsource_url = $source_url\nsource_filename = $source_name\nsource_hash = $source_hash\n\npatch_url = $patch_url\npatch_filename = $patch_name\npatch_hash = $patch_hash\n" > "$version/$wrap_txt_name"
+	printf "[wrap-file]\ndirectory = $folder_name\n\nsource_url = $source_url\nsource_filename = $source_name\nsource_hash = $source_hash\n\npatch_url = $patch_url\npatch_filename = $patch_name\npatch_hash = $patch_hash\n" > "$version/$wrap_txt_name"
 	
 	wrap_img_url="https://raw.githubusercontent.com/MatthewScholefield/meson-wraps/master/resources/wrap-file.png"
 	website_img_url="https://raw.githubusercontent.com/MatthewScholefield/meson-wraps/master/resources/website.png"
