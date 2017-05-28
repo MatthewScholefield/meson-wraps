@@ -30,21 +30,30 @@ for dir in *; do
 	echo
 	echo "=== $name ==="
 	eval $(cat "$dir/$info_filename")
-	echo "Source url is $source_url"https://github.com/MatthewScholefield/jsonxx/archive/v0.1.0.tar.gz
+	echo "Source url is $source_url"
 	
 	source_name=$(wget --server-response -q -O - "$source_url" 2>&1 |
 		grep "Content-Disposition:" | tail -1 |
 		awk 'match($0, /filename=(.+)/, f){ print f[1] }')
+	
   	echo "Source filename is $source_name"
   	
-  	source_hash=$(curl -Ls $source_url | sha256sum | awk '{ print $1 }')
+  	wget --content-disposition -q -O "$source_name" "$source_url"
+  	
+  	folder_name=$(tar -xvf "$source_name" | sed -e 's/\([^\/]*\)\//\1/gm' | head -n 1)
+  	echo "Tar folder name is $folder_name"
+  	rm -rf "$folder_name"
+  	
+  	source_hash=$(cat $source_name | sha256sum | awk '{ print $1 }')
 	echo "Source hash is $source_hash"
+	
+	rm "$source_name"
 	
 	patch_name=$(sed -e 's/.tar.gz/-meson.tar.gz/' <<< "$source_name")
 	echo "Wrap filename is $patch_name"
 	
 	echo "Compressing wrap..."
-	tar -czf "$version/$patch_name" "$dir/$wrap_dir"
+	tar -cf "$version/$patch_name" --xform="s,$dir/$wrap_dir/,$folder_name/," $(find "$dir/$wrap_dir" -type f)
 	
 	patch_hash=$(sha256sum $version/$patch_name | awk '{ print $1 }')
 	echo "Source hash is $patch_hash"
@@ -53,5 +62,5 @@ for dir in *; do
 	patch_url="$release_url/$version/$patch_name"
 	echo "Patch url is $patch_url"
 	
-	printf "### [$name:][$name-url] ###\n\`\`\`\n[wrap-file]\ndirectory = $dir\n\nsource_url = $source_url\nsource_filename = $source_name\nsource_hash = $source_hash\n\npatch_url = $patch_url\npatch_filename = $patch_name\npatch_hash = $patch_hash\n\`\`\`\n[$name-url]:$repository_url\n\n" >> "$version/$notes_filename"
+	printf "### [$name:][$name-url] ###\n\`\`\`\n[wrap-file]\ndirectory = $folder_name\n\nsource_url = $source_url\nsource_filename = $source_name\nsource_hash = $source_hash\n\npatch_url = $patch_url\npatch_filename = $patch_name\npatch_hash = $patch_hash\n\`\`\`\n[$name-url]:$repository_url\n\n" >> "$version/$notes_filename"
 done
