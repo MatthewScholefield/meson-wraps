@@ -58,9 +58,16 @@ for dir in *; do
 	patch_hash=$(sha256sum $version/$patch_name | awk '{ print $1 }')
 	echo "Source hash is $patch_hash"
 	
-	release_url="https://github.com/MatthewScholefield/meson-wraps/releases/download"
-	patch_url="$release_url/$version/$patch_name"
+	release_url="https://github.com/MatthewScholefield/meson-wraps/releases/download/$version"
+	patch_url="$release_url/$patch_name"
 	echo "Patch url is $patch_url"
 	
-	printf "### [$name:][$name-url] ###\n\`\`\`\n[wrap-file]\ndirectory = $folder_name\n\nsource_url = $source_url\nsource_filename = $source_name\nsource_hash = $source_hash\n\npatch_url = $patch_url\npatch_filename = $patch_name\npatch_hash = $patch_hash\n\`\`\`\n[$name-url]:$repository_url\n\n" >> "$version/$notes_filename"
+	wrap_txt_name=$name.wrap
+	printf "\n[wrap-file]\ndirectory = $folder_name\n\nsource_url = $source_url\nsource_filename = $source_name\nsource_hash = $source_hash\n\npatch_url = $patch_url\npatch_filename = $patch_name\npatch_hash = $patch_hash\n" > "$version/$wrap_txt_name"
+	
+	wrap_img_url="https://raw.githubusercontent.com/MatthewScholefield/meson-wraps/master/resources/wrap-file.png"
+	website_img_url="https://raw.githubusercontent.com/MatthewScholefield/meson-wraps/master/resources/website.png"
+	
+	printf "<h1><p align="center">$name</p></h1><p align="center"><a href=\"$release_url/$wrap_txt_name\"><img src=\"$wrap_img_url\"></a><a href=\"$repository_url\"><img src=\"$website_img_url\"></a></p><br>\n" >> "$version/$notes_filename"
 done
+
