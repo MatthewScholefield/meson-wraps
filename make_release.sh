@@ -68,6 +68,11 @@ for dir in *; do
 	wrap_img_url="https://raw.githubusercontent.com/MatthewScholefield/meson-wraps/master/resources/wrap-file.png"
 	website_img_url="https://raw.githubusercontent.com/MatthewScholefield/meson-wraps/master/resources/website.png"
 	
-	printf "<h1><p align="center">$name</p></h1><p align="center"><a href=\"$release_url/$wrap_txt_name\"><img src=\"$wrap_img_url\"></a><a href=\"$repository_url\"><img src=\"$website_img_url\"></a></p><br>\n" >> "$version/$notes_filename"
+	scripts=""
+	if [ -f $dir/$wrap_dir/build.py ]; then scripts="fabricate, $scripts"; fi
+	if [ -f $dir/$wrap_dir/meson.build ]; then scripts="meson, $scripts"; fi
+	scripts="${scripts%??}"  # Remove last ", "
+	
+	printf "<h1><p align=center>$name</p></h1><p align=center>($scripts)<p align=center><a href=\"$release_url/$wrap_txt_name\"><img src=\"$wrap_img_url\"></a><a href=\"$repository_url\"><img src=\"$website_img_url\"></a></p><br>\n" >> "$version/$notes_filename"
 done
 

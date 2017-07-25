@@ -18,6 +18,16 @@ headers = [
 	'parallel_fann.hpp'
 ]
 
-install_headers(headers)
+sdir = 'fann'
+custom_install_dir = '../../include/' + sdir
 
-inc = include_directories('.')
+mkdir = find_program('mkdir')
+cp = find_program('cp')
+
+run_command(mkdir, '-p', custom_install_dir)
+run_command(cp, headers, custom_install_dir)
+
+inc = include_directories(['.', custom_install_dir])
+
+install_headers(headers, subdir : sdir)
+
