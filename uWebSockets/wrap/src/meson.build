@@ -42,6 +42,6 @@ cp = find_program('cp')
 run_command(mkdir, '-p', custom_install_dir)
 run_command(cp, headers, custom_install_dir)
 
-inc = include_directories(custom_install_dir)
+inc = include_directories('../include')
 install_headers(headers, subdir : sdir)
 
