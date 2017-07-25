@@ -19,14 +19,11 @@ def run_untracked(args):
 
 def build():
     for i in find_files('src', '.cpp'):
-        run('g++', '-fPIC', '-c', i, '-Isrc/include')
+        run('g++', '-fPIC', '-std=c++11', '-c', i, '-Isrc/include')
     
-    after()
-    run('g++', '-shared', '-o', 'libuWS.so', find_files('.', '.o'))
-    
-    after()
-    run('mkdir', '-p', 'include/uWS')
-    run('cp', '-r', find_files('src', '.h'), 'include/uWS')
+    after(); run('g++', '-shared', '-o', 'libuWS.so', find_files('.', '.o'))
+    after(); run('mkdir', '-p', 'include/uWS')
+    after(); run('cp', '-r', find_files('src', '.h'), 'include/uWS')
 
 def install():
     build(); after()

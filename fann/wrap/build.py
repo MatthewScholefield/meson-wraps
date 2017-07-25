@@ -20,12 +20,9 @@ def run_untracked(args):
 def build():
     run('cc', '-fPIC', '-c', 'src/floatfann.c', '-Isrc/include')
     
-    after()
-    run('cc', '-shared', '-o', 'libfann.so', '-lm', find_files('.', '.o'))
-    
-    after()
-    run('mkdir', '-p', 'include/fann')
-    run('cp', find_files('src/include', '.h'), 'include/fann')
+    after(); run('cc', '-shared', '-o', 'libfann.so', '-lm', find_files('.', '.o'))
+    after(); run('mkdir', '-p', 'include/fann')
+    after(); run('cp', find_files('src/include', '.h'), 'include/fann')
 
 def install():
     build(); after()
